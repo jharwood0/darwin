@@ -2,13 +2,13 @@ package com.j4_harwood.biocomp.darwin;
 
 public class BoundedData{
 	// this is a single rule
-	float input[];
+	Float input[];
 	int output;
-	public BoundedData(float input[], int output){
+	public BoundedData(Float input[], int output){
 		this.input = input;
 		this.output = output;
 	}
-	public boolean fits(float testInput[]){
+	public boolean fits(Float testInput[]){
 		//for ever testInput i there are two local input
 		//System.out.println("generated: "+Arrays.toString(input));
 		//System.out.println("test: "+ Arrays.toString(testInput));

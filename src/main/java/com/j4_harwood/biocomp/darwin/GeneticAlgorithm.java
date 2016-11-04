@@ -29,8 +29,6 @@ public class GeneticAlgorithm<T extends Chromosome & Comparable<T>> {
 			if(elitism){
 				Elite = getFittest();
 			}
-			// Includes crossover, 
-			//population = createOffspring();
 			population = crossoverPopulation();
 			mutatePopulation();
 			

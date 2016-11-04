@@ -2,10 +2,6 @@ package com.j4_harwood.biocomp.darwin;
 
 import java.util.ArrayList;
 
-/**
- * Hello world!
- *
- */
 public class App 
 {
 	private static int populationSize = 100;
@@ -14,25 +10,33 @@ public class App
     {
         System.out.println( "Hello World!" );
         //GeneticAlgorithm<CountOnesChrom> GA = new GeneticAlgorithm<CountOnesChrom>(createInitialPopulation());
-        //GeneticAlgorithm<DataSet2> GA = new GeneticAlgorithm<DataSet2>(createDS2Population());
-        GeneticAlgorithm<DS3> GA = new GeneticAlgorithm<DS3>(createDS3Population());
+        GeneticAlgorithm<DS1> GA1 = new GeneticAlgorithm<DS1>(createDS1Population());
+        GeneticAlgorithm<DS2> GA2 = new GeneticAlgorithm<DS2>(createDS2Population());
+        GeneticAlgorithm<DS3> GA3 = new GeneticAlgorithm<DS3>(createDS3Population());
         //System.out.println("Population size = "+GA.size());
-        GA.evolve(numGenerations);
+        GA3.evolve(numGenerations);
         
         //We have evolved
-        TestEngine TE = new TestEngine();
+        /*TestEngine TE = new TestEngine();
         TE.setTestSet("data3");
-        TE.inputRules(GA.getFittest().getGenes());
-        TE.execute();
+        TE.inputRules(GA3.getFittest().getGenes());
+        TE.execute();*/
     }
     
-
+    /* Create the initial population */
+    public static ArrayList<DS1> createDS1Population(){
+    	ArrayList<DS1> tPop = new ArrayList<>();
+    	for(int i = 0; i < populationSize; i++){
+    		tPop.add(new DS1());
+    	}
+    	return tPop;
+    }
     
     /* Create the initial population */
-    public static ArrayList<DataSet2> createDS2Population(){
-    	ArrayList<DataSet2> tPop = new ArrayList<>();
+    public static ArrayList<DS2> createDS2Population(){
+    	ArrayList<DS2> tPop = new ArrayList<>();
     	for(int i = 0; i < populationSize; i++){
-    		tPop.add(new DataSet2());
+    		tPop.add(new DS2());
     	}
     	return tPop;
     }

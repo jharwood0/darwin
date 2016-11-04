@@ -2,20 +2,16 @@ package com.j4_harwood.biocomp.darwin;
 
 import java.util.Arrays;
 
-public class Data{
-		float[] inputs;
+public class Data<K extends Number>{
+		K[] inputs;
 		int output;
-		public Data(float[] inputs, int output){
-			if(inputs.length != 6){
-				System.out.println("Error! inputs should be 6");
-			}else{
-				this.inputs = inputs;
-				this.output = output;
-			}
+		public Data(K[] inputs, int output){
+			this.inputs = inputs;
+			this.output = output;
 		}
-		public boolean matches(Data input){
+		public boolean matches(Data<K> input){
 			for(int i = 0; i < inputs.length; i++){
-				if(inputs[i] != input.getInputs()[i] && inputs[i] != 2 && input.getInputs()[i] != 2){
+				if((inputs[i].equals(input.getInputs()[i]) == false) && (inputs[i].equals(new Integer(2)) == false) && (input.getInputs().equals(new Integer(2)) == false)){
 					return false;
 				}
 			}
@@ -25,10 +21,10 @@ public class Data{
 		public String toString(){
 			return Arrays.toString(inputs) + " : " + output;
 		}
-		public float getOutput() {
+		public int getOutput() {
 			return output;
 		}
-		public float[] getInputs(){
+		public K[] getInputs(){
 			return inputs;
 		}
 	}

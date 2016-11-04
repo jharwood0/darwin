@@ -14,7 +14,7 @@ public class DS3 implements Chromosome, Comparable<DS3>{
 	private final int numRules = 10;
 	private final int geneSize = ((6*2)+1)*numRules;
 	
-	private static ArrayList<Data> inputData;
+	private static ArrayList<Data<Float>> inputData;
 	
 	private float[] genes = new float[geneSize];
 	private int fitness;
@@ -92,7 +92,7 @@ public class DS3 implements Chromosome, Comparable<DS3>{
 	}
 	
 	private void importRules(){
-		inputData = new ArrayList<Data>();
+		inputData = new ArrayList<Data<Float>>();
 		Scanner scanner = new Scanner(getClass().getResourceAsStream("DS3.txt"));
 		String p = "([-+]?[0-9]*\\.?[0-9]*)\\s([-+]?[0-9]*\\.?[0-9]*)\\s([-+]?[0-9]*\\.?[0-9]*)\\s([-+]?[0-9]*\\.?[0-9]*)\\s([-+]?[0-9]*\\.?[0-9]*)\\s([-+]?[0-9]*\\.?[0-9]*)\\s(\\d)";
 		Pattern pattern = Pattern.compile(p);
@@ -100,7 +100,7 @@ public class DS3 implements Chromosome, Comparable<DS3>{
 			//System.out.println(scanner.nextLine());
 			Matcher matcher = pattern.matcher(scanner.nextLine());
 			if(matcher.find()){
-				float[] inputs = new float[6];
+				Float[] inputs = new Float[6];
 				inputs[0] = Float.parseFloat(matcher.group(1));
 				inputs[1] = Float.parseFloat(matcher.group(2));
 				inputs[2] = Float.parseFloat(matcher.group(3));
@@ -108,7 +108,7 @@ public class DS3 implements Chromosome, Comparable<DS3>{
 				inputs[4] = Float.parseFloat(matcher.group(5));
 				inputs[5] = Float.parseFloat(matcher.group(6));
 				int output = Integer.parseInt(matcher.group(7));
-				Data tData = new Data(inputs, output);
+				Data<Float> tData = new Data<Float>(inputs, output);
 				inputData.add(tData);
 			}
 		}
@@ -120,7 +120,7 @@ public class DS3 implements Chromosome, Comparable<DS3>{
 
 		int i = 0;
 		while(i < geneSize){
-			float input[] = new float[6*2];
+			Float input[] = new Float[6*2];
 			for(int j = 0; j < input.length; j++){
 				input[j] = genes[i];
 				i++;
@@ -144,7 +144,7 @@ public class DS3 implements Chromosome, Comparable<DS3>{
 		}
 		int fitnewFitness = 0;
 		ArrayList<BoundedData> generatedRules = parseGenes();
-		for(Data input : inputData){
+		for(Data<Float> input : inputData){
 			for(BoundedData generatedRule : generatedRules){
 				if(generatedRule.fits(input.getInputs())){
 					if(generatedRule.getOutput() == input.getOutput()){

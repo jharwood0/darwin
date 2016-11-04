@@ -1,20 +1,19 @@
 package com.j4_harwood.biocomp.darwin;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class TestEngine {
 	ArrayList<BoundedData> generatedRules = new ArrayList<BoundedData>();
-	ArrayList<Data> testData = new ArrayList<Data>();
+	ArrayList<Data<Float>> testData = new ArrayList<Data<Float>>();
 	public TestEngine(){
 		
 	}
 	
 	public void setTestSet(String f){
-		testData = new ArrayList<Data>();
+		testData = new ArrayList<Data<Float>>();
 		Scanner scanner = new Scanner(getClass().getResourceAsStream(f));
 		String p = "([-+]?[0-9]*\\.?[0-9]*)\\s([-+]?[0-9]*\\.?[0-9]*)\\s([-+]?[0-9]*\\.?[0-9]*)\\s([-+]?[0-9]*\\.?[0-9]*)\\s([-+]?[0-9]*\\.?[0-9]*)\\s([-+]?[0-9]*\\.?[0-9]*)\\s(\\d)";
 		Pattern pattern = Pattern.compile(p);
@@ -22,7 +21,7 @@ public class TestEngine {
 			//System.out.println(scanner.nextLine());
 			Matcher matcher = pattern.matcher(scanner.nextLine());
 			if(matcher.find()){
-				float[] inputs = new float[6];
+				Float[] inputs = new Float[6];
 				inputs[0] = Float.parseFloat(matcher.group(1));
 				inputs[1] = Float.parseFloat(matcher.group(2));
 				inputs[2] = Float.parseFloat(matcher.group(3));
@@ -30,7 +29,7 @@ public class TestEngine {
 				inputs[4] = Float.parseFloat(matcher.group(5));
 				inputs[5] = Float.parseFloat(matcher.group(6));
 				int output = Integer.parseInt(matcher.group(7));
-				Data tData = new Data(inputs, output);
+				Data<Float> tData = new Data<Float>(inputs, output);
 				testData.add(tData);
 			}
 		}
@@ -41,7 +40,7 @@ public class TestEngine {
 		
 		int i = 0;
 		while(i < genes.length){
-			float input[] = new float[6*2];
+			Float input[] = new Float[6*2];
 			for(int j = 0; j < input.length; j++){
 				input[j] = genes[i];
 				i++;
@@ -54,7 +53,7 @@ public class TestEngine {
 
 	public void execute() {
 		int fitness = 0;
-		for(Data test : testData){
+		for(Data<Float> test : testData){
 			for(BoundedData gen : generatedRules){
 				if(gen.fits(test.getInputs())){
 					if(gen.getOutput() == test.getOutput()){
