@@ -1,11 +1,11 @@
 package com.j4_harwood.biocomp.darwin;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class GeneticAlgorithm<T extends Chromosome & Comparable<T>> {
 	private int populationSize;
-	private double mutationRate = 0.01;
+	private double mutationRate = 0.015;
+	private double crossoverRate = 0.8;
 	private boolean elitism = true;
 	
 	private ArrayList<T> population = new ArrayList<>();
@@ -46,12 +46,16 @@ public class GeneticAlgorithm<T extends Chromosome & Comparable<T>> {
 		T tChrom = population.get(0);
 		
 		for(int i = 0; i < populationSize/2; i++){
-			T p1 = rouletteSelection();
-			T p2 = rouletteSelection();
-			
-			T[] children = (T[])tChrom.crossover(p1, p2);
-			newPopulation.add(children[0]);
-			newPopulation.add(children[1]);
+			T p1 = tournamentSelection();
+			T p2 = tournamentSelection();
+			if(GARand.nextDouble() < crossoverRate){
+				T[] children = (T[])tChrom.crossover(p1, p2);
+				newPopulation.add(children[0]);
+				newPopulation.add(children[1]);
+			}else{
+				newPopulation.add((T)p1.copy());
+				newPopulation.add((T)p2.copy());
+			}
 		}
 		return newPopulation;
 	}
@@ -111,18 +115,14 @@ public class GeneticAlgorithm<T extends Chromosome & Comparable<T>> {
 		return totalFitness;
 	}
 	
-	private ArrayList<T> TournamentSelection(){
-		ArrayList<T> newPop = new ArrayList<T>();
-		for(int i = 0; i < populationSize; i ++){
+	private T tournamentSelection(){
 			T p1 = population.get(GARand.nextInt(populationSize));
 			T p2 = population.get(GARand.nextInt(populationSize));
 			if(p1.getFitness() >= p2.getFitness()){
-				newPop.add(p1);
+				return p1;
 			}else{
-				newPop.add(p2);
+				return p2;
 			}
-		}
-		return newPop;
 	}
 	
 }
