@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class GeneticAlgorithm<T extends Chromosome & Comparable<T>> {
 	private int populationSize;
 	private double mutationRate = 0.015;
-	private double crossoverRate = 0.8;
+	private double crossoverRate = 0.5;
 	private boolean elitism = true;
 	
 	private ArrayList<T> population = new ArrayList<>();
@@ -29,6 +29,8 @@ public class GeneticAlgorithm<T extends Chromosome & Comparable<T>> {
 			if(elitism){
 				Elite = getFittest();
 			}
+			// Includes crossover, 
+			//population = createOffspring();
 			population = crossoverPopulation();
 			mutatePopulation();
 			
