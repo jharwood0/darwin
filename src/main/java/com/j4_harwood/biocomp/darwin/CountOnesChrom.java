@@ -91,4 +91,10 @@ public class CountOnesChrom implements Chromosome {
 		return Arrays.toString(genes) + " : " + this.getFitness();
 	}
 
+	@Override
+	public void replaceGenes(Chromosome tChrom) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

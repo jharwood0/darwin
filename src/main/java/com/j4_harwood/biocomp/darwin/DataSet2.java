@@ -6,7 +6,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DataSet2 implements Chromosome {
+public class DataSet2 implements Chromosome, Comparable<DataSet2>{
 	/* to encapsulate a rule */
 	class Data{
 		int[] inputs;
@@ -39,7 +39,7 @@ public class DataSet2 implements Chromosome {
 		}
 	}
 	
-	private final int numRules = 5;
+	private final int numRules = 7;
 	private final int geneSize = 7*numRules;
 	
 	private static ArrayList<Data> inputData;
@@ -181,6 +181,25 @@ public class DataSet2 implements Chromosome {
 	@Override
 	public String toString(){
 		return Arrays.toString(genes) + " : " + this.getFitness();
+	}
+
+	@Override
+	public void replaceGenes(Chromosome tChrom) {
+		int[] newGenes = Arrays.copyOf(((DataSet2)tChrom).getGenes(), geneSize);
+		this.genes = newGenes;
+	}
+
+
+	@Override
+	public int compareTo(DataSet2 o) {
+		if(o.getFitness() == this.getFitness()){
+			return 0;
+		}
+		if(this.getFitness() < o.getFitness()){
+			return -1;
+		}else{
+			return 1;
+		}
 	}
 
 }

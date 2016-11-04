@@ -1,14 +1,17 @@
 package com.j4_harwood.biocomp.darwin;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
-public class GeneticAlgorithm<T extends Chromosome> {
+public class GeneticAlgorithm<T extends Chromosome & Comparable<T>> {
 	private int populationSize;
 	private int geneSize;
 	private double mutationRate = 0.015;
-	private double crossoverRate = 0.7;
+	private double crossoverRate = 0.6;
+	private double elitismRate = 0.1;
 	
-	private ArrayList<T> population = new ArrayList<>();;
+	private ArrayList<T> population = new ArrayList<>();
+	
 	public GeneticAlgorithm(ArrayList<T> population){
 		this.population = population;
 		this.populationSize = population.size();
@@ -24,13 +27,34 @@ public class GeneticAlgorithm<T extends Chromosome> {
 			if(Evaluate(i)){
 				return population;
 			}
+			
+			ArrayList<T> elites = new ArrayList<T>();
+			int numElites = (int)(elitismRate * (double)populationSize);
+			
+			//Collections.sort(population);
+			//Collections.reverse(population);
+			
+			T Elite = getFittest();
+			//System.out.println("Best = "+Elite.toString());
+			//for(int j = 0; j < numElites; j++){
+			//	elites.add(population.get(j));
+			//}
+			
+			
 			population = TournamentSelection();
 			population = crossoverPopulation();
 			mutatePopulation();
+			
+			//Collections.sort(population);
+			//for(int j = 0; j < numElites; j++){
+			//population.get(0).replaceGenes(Elite);
+			this.getweakest().replaceGenes(Elite);
+			//}
 		}
 		return null;
 	}
 	
+
 	private ArrayList<T> crossoverPopulation() {
 		ArrayList<T> newPopulation = new ArrayList<T>();
 		// Should be static, but future problems
@@ -39,7 +63,10 @@ public class GeneticAlgorithm<T extends Chromosome> {
 		for(int i = 0; i < populationSize/2; i++){
 			T p1 = population.get(GARand.nextInt(populationSize));
 			T p2 = population.get(GARand.nextInt(populationSize));
-			if(GARand.nextDouble() < this.crossoverRate){
+			
+			
+//			if(GARand.nextDouble() < this.crossoverRate){
+			if(true){
 				//System.out.println("Parent 1 :"+p1.toString());
 				//System.out.println("Parent 2 :"+p2.toString());
 				T[] children = (T[]) tChrom.crossover(p1, p2);
@@ -56,7 +83,7 @@ public class GeneticAlgorithm<T extends Chromosome> {
 	}
 
 	private boolean Evaluate(int generation){
-		System.out.println(this.getFittest().toString());
+		System.out.println(this.getFittest().getFitness() + " : "+generation);
 		if(this.getFittest().getFitness() == this.getFittest().maxFitness()){
 			System.out.println("Took : "+generation);
 			return true;
@@ -64,7 +91,7 @@ public class GeneticAlgorithm<T extends Chromosome> {
 		return false;
 	}
 	
-	private T getFittest(){
+	public T getFittest(){
 		T fittest = population.get(0);
 		for(T chrom : population){
 			if(chrom.getFitness() >= fittest.getFitness()){
@@ -72,6 +99,16 @@ public class GeneticAlgorithm<T extends Chromosome> {
 			}
 		}
 		return fittest;
+	}
+	
+	private T getweakest(){
+		T weakest = population.get(0);
+		for(T tChrom : population){
+			if(tChrom.getFitness() <= weakest.getFitness()){
+				weakest = tChrom;
+			}
+		}
+		return weakest;
 	}
 	
 	private ArrayList<T> rouletteSelection(){

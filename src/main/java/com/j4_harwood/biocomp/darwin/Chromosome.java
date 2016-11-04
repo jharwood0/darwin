@@ -7,4 +7,5 @@ public interface Chromosome{
 	public int maxFitness();
 	public int size();
 	public Chromosome copy();
+	public void replaceGenes(Chromosome tChrom);
 }
