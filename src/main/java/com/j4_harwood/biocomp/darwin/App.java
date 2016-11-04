@@ -8,8 +8,6 @@ public class App
 	private static int numGenerations = 3000;
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
-        //GeneticAlgorithm<CountOnesChrom> GA = new GeneticAlgorithm<CountOnesChrom>(createInitialPopulation());
         GeneticAlgorithm<DS1> GA1 = new GeneticAlgorithm<DS1>(createDS1Population());
         GeneticAlgorithm<DS2> GA2 = new GeneticAlgorithm<DS2>(createDS2Population());
         GeneticAlgorithm<DS3> GA3 = new GeneticAlgorithm<DS3>(createDS3Population());
@@ -17,10 +15,10 @@ public class App
         GA3.evolve(numGenerations);
         
         //We have evolved
-        /*TestEngine TE = new TestEngine();
+        TestEngine TE = new TestEngine();
         TE.setTestSet("data3");
         TE.inputRules(GA3.getFittest().getGenes());
-        TE.execute();*/
+        TE.execute();
     }
     
     /* Create the initial population */

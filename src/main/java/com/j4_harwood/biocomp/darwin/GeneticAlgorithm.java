@@ -2,10 +2,10 @@ package com.j4_harwood.biocomp.darwin;
 
 import java.util.ArrayList;
 
-public class GeneticAlgorithm<T extends Chromosome & Comparable<T>> {
+public class GeneticAlgorithm<T extends Chromosome<T> & Comparable<T>> {
 	private int populationSize;
 	private double mutationRate = 0.015;
-	private double crossoverRate = 0.5;
+	private double crossoverRate = 0.9;
 	private boolean elitism = true;
 	
 	private ArrayList<T> population = new ArrayList<>();
@@ -29,8 +29,7 @@ public class GeneticAlgorithm<T extends Chromosome & Comparable<T>> {
 			if(elitism){
 				Elite = getFittest();
 			}
-			population = crossoverPopulation();
-			mutatePopulation();
+			population = createOffspring();
 			
 			if(elitism){
 				this.getweakest().replaceGenes(Elite);
@@ -39,22 +38,24 @@ public class GeneticAlgorithm<T extends Chromosome & Comparable<T>> {
 		return null;
 	}
 	
-
-	private ArrayList<T> crossoverPopulation() {
+	private ArrayList<T> createOffspring(){
 		ArrayList<T> newPopulation = new ArrayList<T>();
 		// Should be static, but future problems
 		T tChrom = population.get(0);
-		
 		for(int i = 0; i < populationSize/2; i++){
-			T p1 = tournamentSelection();
-			T p2 = tournamentSelection();
+			T p1 = tournamentSelection(4);
+			T p2 = tournamentSelection(4);
 			if(GARand.nextDouble() < crossoverRate){
-				T[] children = (T[])tChrom.crossover(p1, p2);
+				T[] children = tChrom.crossover(p1, p2);
+				children[0].mutate(mutationRate);
+				children[1].mutate(mutationRate);
 				newPopulation.add(children[0]);
 				newPopulation.add(children[1]);
 			}else{
-				newPopulation.add((T)p1.copy());
-				newPopulation.add((T)p2.copy());
+				p1.mutate(mutationRate);
+				p2.mutate(mutationRate);
+				newPopulation.add(p1.copy());
+				newPopulation.add(p2.copy());
 			}
 		}
 		return newPopulation;
@@ -89,6 +90,20 @@ public class GeneticAlgorithm<T extends Chromosome & Comparable<T>> {
 		return weakest;
 	}
 	
+	private T tournamentSelection(int numParents){
+		ArrayList<T> pool = new ArrayList<T>();
+		for(int i = 0; i < numParents; i++){
+			pool.add(population.get(GARand.nextInt(populationSize)));
+		}
+		T best = pool.get(0);
+		for(int i = 0; i < numParents; i++){
+			if(pool.get(i).getFitness() >= best.getFitness()){
+				best = pool.get(i);
+			}
+		}
+		return best;
+	}
+	
 	private T rouletteSelection(){
 		int fitnessSum = totalFitness();
 		double value = GARand.nextDouble() * (double)fitnessSum;
@@ -99,12 +114,6 @@ public class GeneticAlgorithm<T extends Chromosome & Comparable<T>> {
 			}
 		}
 		return population.get(populationSize-1);
-	}
-	
-	private void mutatePopulation(){
-		for(T tChrom : population){
-			tChrom.mutate(mutationRate);
-		}
 	}
 	
 	private int totalFitness(){

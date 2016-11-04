@@ -8,7 +8,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DS3 implements Chromosome, Comparable<DS3>{
+public class DS3 implements Chromosome<DS3>, Comparable<DS3>{
 	/* to encapsulate a rule */
 	
 	private final int numRules = 10;
@@ -16,7 +16,7 @@ public class DS3 implements Chromosome, Comparable<DS3>{
 	
 	private static ArrayList<Data<Float>> inputData;
 	
-	private float[] genes = new float[geneSize];
+	private Float[] genes = new Float[geneSize];
 	private int fitness;
 	public DS3(){
 		this.initialise();
@@ -38,12 +38,11 @@ public class DS3 implements Chromosome, Comparable<DS3>{
 		return truncatedDouble.floatValue();
 	}
 	
-	public DS3(float[] newGenes){
+	public DS3(Float[] newGenes){
 		genes = Arrays.copyOf(newGenes, newGenes.length);
 		calculateFitness();
 	}
 
-	@Override
 	public void mutate(double mutationRate) {
 		for(int i = 0; i < geneSize; i++){
 			double rnd = GARand.nextDouble();
@@ -59,13 +58,13 @@ public class DS3 implements Chromosome, Comparable<DS3>{
 	
 
 	@Override
-	public DS3[] crossover(Chromosome parent1, Chromosome parent2) {
+	public DS3[] crossover(DS3 parent1, DS3 parent2) {
 		//Creates 2 NEW children
-		float[] p1 = ((DS3)parent1).getGenes();
-		float[] p2 = ((DS3)parent2).getGenes();
+		Float[] p1 = parent1.getGenes();
+		Float[] p2 = parent2.getGenes();
 		
-		float[] c1 = new float[geneSize];
-		float[] c2 = new float[geneSize];
+		Float[] c1 = new Float[geneSize];
+		Float[] c2 = new Float[geneSize];
 		int idx = GARand.nextInt(geneSize);
 		for(int i = 0; i < geneSize; i++){
 			if(i < idx){
@@ -82,7 +81,7 @@ public class DS3 implements Chromosome, Comparable<DS3>{
 		return children;
 	}
 
-	public float[] getGenes() {
+	public Float[] getGenes() {
 		return genes;
 	}
 
@@ -174,8 +173,8 @@ public class DS3 implements Chromosome, Comparable<DS3>{
 	}
 
 	@Override
-	public void replaceGenes(Chromosome tChrom) {
-		float[] newGenes = Arrays.copyOf(((DS3)tChrom).getGenes(), geneSize);
+	public void replaceGenes(DS3 tChrom) {
+		Float[] newGenes = Arrays.copyOf(tChrom.getGenes(), geneSize);
 		this.genes = newGenes;
 		calculateFitness();
 	}

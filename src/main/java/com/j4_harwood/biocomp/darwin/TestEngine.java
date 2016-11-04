@@ -36,7 +36,7 @@ public class TestEngine {
 		scanner.close();
 	}
 	
-	public void inputRules(float[] genes){
+	public void inputRules(Float[] genes){
 		
 		int i = 0;
 		while(i < genes.length){

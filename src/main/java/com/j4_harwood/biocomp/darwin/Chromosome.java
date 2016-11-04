@@ -1,11 +1,11 @@
 package com.j4_harwood.biocomp.darwin;
 
-public interface Chromosome{
+public interface Chromosome<T>{
 	public void mutate(double mutationRate);
-	public Chromosome[] crossover(Chromosome parent1, Chromosome parent2);
+	public T[] crossover(T parent1, T parent2);
 	public int getFitness();
 	public int maxFitness();
 	public int size();
-	public Chromosome copy();
-	public void replaceGenes(Chromosome tChrom);
+	public T copy();
+	public void replaceGenes(T tChrom);
 }

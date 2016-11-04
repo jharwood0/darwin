@@ -6,7 +6,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DS1 implements Chromosome, Comparable<DS1>{
+public class DS1 implements Chromosome<DS1>, Comparable<DS1>{
 	private final int numRules = 8;
 	private final int geneSize = 6*numRules;
 	
@@ -45,10 +45,10 @@ public class DS1 implements Chromosome, Comparable<DS1>{
 	}
 
 	@Override
-	public DS1[] crossover(Chromosome parent1, Chromosome parent2) {
+	public DS1[] crossover(DS1 parent1, DS1 parent2) {
 		//Creates 2 NEW children
-		int[] p1 = ((DS1)parent1).getGenes();
-		int[] p2 = ((DS1)parent2).getGenes();
+		int[] p1 = parent1.getGenes();
+		int[] p2 = parent2.getGenes();
 		
 		int[] c1 = new int[geneSize];
 		int[] c2 = new int[geneSize];
@@ -155,8 +155,8 @@ public class DS1 implements Chromosome, Comparable<DS1>{
 	}
 
 	@Override
-	public void replaceGenes(Chromosome tChrom) {
-		int[] newGenes = Arrays.copyOf(((DS1)tChrom).getGenes(), geneSize);
+	public void replaceGenes(DS1 tChrom) {
+		int[] newGenes = Arrays.copyOf(tChrom.getGenes(), geneSize);
 		this.genes = newGenes;
 	}
 
