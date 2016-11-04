@@ -17,6 +17,7 @@ public class DS3 implements Chromosome, Comparable<DS3>{
 	private static ArrayList<Data> inputData;
 	
 	private float[] genes = new float[geneSize];
+	private int fitness;
 	public DS3(){
 		this.initialise();
 	}
@@ -25,6 +26,7 @@ public class DS3 implements Chromosome, Comparable<DS3>{
 		for(int i = 0; i < geneSize; i++){
 			genes[i] = newGene();
 		}
+		calculateFitness();
 	}
 	
 	private float newGene(){
@@ -38,15 +40,23 @@ public class DS3 implements Chromosome, Comparable<DS3>{
 	
 	public DS3(float[] newGenes){
 		genes = Arrays.copyOf(newGenes, newGenes.length);
+		calculateFitness();
 	}
 
 	@Override
-	public void mutate(int idx) {
-		float prevGene = genes[idx];
-		while(prevGene == genes[idx]){
-			genes[idx] = newGene();
+	public void mutate(double mutationRate) {
+		for(int i = 0; i < geneSize; i++){
+			double rnd = GARand.nextDouble();
+			if(rnd < mutationRate){
+				float prevGene = genes[i];
+				while(prevGene == genes[i]){
+					genes[i] = newGene();
+				}
+			}
 		}
+		calculateFitness();
 	}
+	
 
 	@Override
 	public DS3[] crossover(Chromosome parent1, Chromosome parent2) {
@@ -125,27 +135,31 @@ public class DS3 implements Chromosome, Comparable<DS3>{
 	
 	@Override
 	public int getFitness(){
+		return fitness;
+	}
+
+	private void calculateFitness() {
 		if(inputData == null){
 			importRules();
 		}
-		int fitness = 0;
+		int fitnewFitness = 0;
 		ArrayList<BoundedData> generatedRules = parseGenes();
 		for(Data input : inputData){
 			for(BoundedData generatedRule : generatedRules){
 				if(generatedRule.fits(input.getInputs())){
 					if(generatedRule.getOutput() == input.getOutput()){
-						fitness ++;
+						fitnewFitness ++;
 					}
 					break;
 				}
 			}
 		}
-		return fitness;
+		fitness = fitnewFitness;
 	}
 	
 	@Override
 	public int maxFitness(){
-		return 64;
+		return 1200;
 	}
 
 	@Override
@@ -163,6 +177,7 @@ public class DS3 implements Chromosome, Comparable<DS3>{
 	public void replaceGenes(Chromosome tChrom) {
 		float[] newGenes = Arrays.copyOf(((DS3)tChrom).getGenes(), geneSize);
 		this.genes = newGenes;
+		calculateFitness();
 	}
 
 

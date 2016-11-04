@@ -64,10 +64,15 @@ public class DataSet2 implements Chromosome, Comparable<DataSet2>{
 	}
 
 	@Override
-	public void mutate(int idx) {
-		int prevGene = genes[idx];
-		while(prevGene == genes[idx]){
-			genes[idx] = newGene();
+	public void mutate(double mutationRate) {
+		for(int i = 0; i < geneSize; i++){
+			double rnd = GARand.nextDouble();
+			if(rnd < mutationRate){
+				int prevGene = genes[i];
+				while(prevGene == genes[i]){
+					genes[i] = newGene();
+				}
+			}
 		}
 	}
 

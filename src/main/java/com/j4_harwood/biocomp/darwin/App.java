@@ -8,7 +8,7 @@ import java.util.ArrayList;
  */
 public class App 
 {
-	private static int populationSize = 60;
+	private static int populationSize = 100;
 	private static int numGenerations = 3000;
     public static void main( String[] args )
     {
@@ -26,14 +26,7 @@ public class App
         TE.execute();
     }
     
-    /* Create the initial population */
-    public static ArrayList<CountOnesChrom> createInitialPopulation(){
-    	ArrayList<CountOnesChrom> tPop = new ArrayList<>();
-    	for(int i = 0; i < populationSize; i++){
-    		tPop.add(new CountOnesChrom());
-    	}
-    	return tPop;
-    }
+
     
     /* Create the initial population */
     public static ArrayList<DataSet2> createDS2Population(){
