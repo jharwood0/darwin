@@ -8,12 +8,13 @@ import java.util.ArrayList;
  */
 public class App 
 {
-	private static int populationSize = 50;
+	private static int populationSize = 100;
 	private static int numGenerations = 5000;
     public static void main( String[] args )
     {
         System.out.println( "Hello World!" );
         //GeneticAlgorithm<CountOnesChrom> GA = new GeneticAlgorithm<CountOnesChrom>(createInitialPopulation());
+        //GeneticAlgorithm<DataSet1> GA = new GeneticAlgorithm<DataSet1>(createDS1Population());
         GeneticAlgorithm<DataSet2> GA = new GeneticAlgorithm<DataSet2>(createDS2Population());
         System.out.println("Population size = "+GA.size());
         GA.evolve(numGenerations);
