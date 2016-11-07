@@ -7,7 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DS2 implements Chromosome<DS2>, Comparable<DS2>{
-	private final int numRules = 7;
+	private final int numRules = 5;
 	private final int geneSize = 7*numRules;
 	
 	private static ArrayList<Data<Integer>> inputData;

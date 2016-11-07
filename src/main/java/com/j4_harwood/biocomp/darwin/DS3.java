@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 public class DS3 implements Chromosome<DS3>, Comparable<DS3>{
 	/* to encapsulate a rule */
 	
-	private final int numRules = 10;
+	private final int numRules = 12;
 	private final int geneSize = ((6*2)+1)*numRules;
 	
 	private static ArrayList<Data<Float>> inputData;

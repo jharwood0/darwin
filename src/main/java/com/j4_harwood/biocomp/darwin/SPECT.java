@@ -6,15 +6,16 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DS1 implements Chromosome<DS1>, Comparable<DS1>{
-	private final int numRules = 15;
-	private final int geneSize = 6*numRules;
-	
+public class SPECT implements Chromosome<SPECT>, Comparable<SPECT>{
+	private final int numRules = 8;
+	private final int geneSize = (22+1)*numRules;
+	private int fitness = 0;
 	private static ArrayList<Data<Integer>> inputData;
 	
-	private int[] genes = new int[geneSize];
-	public DS1(){
+	private Integer[] genes = new Integer[geneSize];
+	public SPECT(){
 		this.initialise();
+		calcFitness();
 	}
 	
 	private void initialise(){
@@ -27,8 +28,9 @@ public class DS1 implements Chromosome<DS1>, Comparable<DS1>{
 		return GARand.nextInt(3);
 	}
 	
-	public DS1(int[] newGenes){
-		this.genes = Arrays.copyOf(newGenes, newGenes.length);
+	public SPECT(Integer[] newGenes){
+		genes = Arrays.copyOf(newGenes, newGenes.length);
+		calcFitness();
 	}
 
 	@Override
@@ -42,16 +44,17 @@ public class DS1 implements Chromosome<DS1>, Comparable<DS1>{
 				}
 			}
 		}
+		calcFitness();
 	}
 
 	@Override
-	public DS1[] crossover(DS1 parent1, DS1 parent2) {
+	public SPECT[] crossover(SPECT parent1, SPECT parent2) {
 		//Creates 2 NEW children
-		int[] p1 = parent1.getGenes();
-		int[] p2 = parent2.getGenes();
+		Integer[] p1 = parent1.getGenes();
+		Integer[] p2 = parent2.getGenes();
 		
-		int[] c1 = new int[geneSize];
-		int[] c2 = new int[geneSize];
+		Integer[] c1 = new Integer[geneSize];
+		Integer[] c2 = new Integer[geneSize];
 		int idx = GARand.nextInt(geneSize);
 		for(int i = 0; i < geneSize; i++){
 			if(i < idx){
@@ -62,13 +65,13 @@ public class DS1 implements Chromosome<DS1>, Comparable<DS1>{
 				c2[i] = p1[i];
 			}
 		}
-		DS1[] children = new DS1[2];
-		children[0] = new DS1(c1);
-		children[1] = new DS1(c2);
+		SPECT[] children = new SPECT[2];
+		children[0] = new SPECT(c1);
+		children[1] = new SPECT(c2);
 		return children;
 	}
 
-	private int[] getGenes() {
+	public Integer[] getGenes() {
 		return genes;
 	}
 
@@ -79,22 +82,26 @@ public class DS1 implements Chromosome<DS1>, Comparable<DS1>{
 	
 	private void importRules(){
 		inputData = new ArrayList<Data<Integer>>();
-		Scanner scanner = new Scanner(getClass().getResourceAsStream("data1"));
-		String p = "(\\d)(\\d)(\\d)(\\d)(\\d)\\s(\\d)";
+		Scanner scanner = new Scanner(getClass().getResourceAsStream("SPECT.train"));
+		String p = "(\\d),(\\d),(\\d),(\\d),(\\d),(\\d),(\\d),(\\d),(\\d),(\\d),(\\d),(\\d),(\\d),(\\d),(\\d),(\\d),(\\d),(\\d),(\\d),(\\d),(\\d),(\\d),(\\d)";
 		Pattern pattern = Pattern.compile(p);
 		while(scanner.hasNextLine()){
 			//System.out.println(scanner.nextLine());
 			Matcher matcher = pattern.matcher(scanner.nextLine());
 			if(matcher.find()){
-				Integer[] inputs = new Integer[5];
-				inputs[0] = Integer.parseInt(matcher.group(1));
-				inputs[1] = Integer.parseInt(matcher.group(2));
-				inputs[2] = Integer.parseInt(matcher.group(3));
-				inputs[3] = Integer.parseInt(matcher.group(4));
-				inputs[4] = Integer.parseInt(matcher.group(5));
-				int output = Integer.parseInt(matcher.group(6));
+				Integer[] inputs = new Integer[22];
+				int output = 0;
+				for(int i = 0; i < 23; i++){
+					if(i == 0){
+						output = Integer.parseInt(matcher.group(1));
+					}else{
+						inputs[i-1] = Integer.parseInt(matcher.group(i+1));
+					}
+				}
+				
 				Data<Integer> tData = new Data<Integer>(inputs, output);
 				inputData.add(tData);
+				System.out.println(tData.toString());
 			}
 		}
 		scanner.close();
@@ -104,7 +111,24 @@ public class DS1 implements Chromosome<DS1>, Comparable<DS1>{
 		ArrayList<Data<Integer>> generatedRules = new ArrayList<Data<Integer>>();
 		for(int i = 0; i < geneSize;){
 			int j = 0;
-			Integer inputs[] = new Integer[5];
+			Integer inputs[] = new Integer[22];
+			inputs[j++] = genes[i++];
+			inputs[j++] = genes[i++];
+			inputs[j++] = genes[i++];
+			inputs[j++] = genes[i++];
+			inputs[j++] = genes[i++];
+			inputs[j++] = genes[i++];
+			inputs[j++] = genes[i++];
+			inputs[j++] = genes[i++];
+			inputs[j++] = genes[i++];
+			inputs[j++] = genes[i++];
+			inputs[j++] = genes[i++];
+			inputs[j++] = genes[i++];
+			inputs[j++] = genes[i++];
+			inputs[j++] = genes[i++];
+			inputs[j++] = genes[i++];
+			inputs[j++] = genes[i++];
+			inputs[j++] = genes[i++];
 			inputs[j++] = genes[i++];
 			inputs[j++] = genes[i++];
 			inputs[j++] = genes[i++];
@@ -120,32 +144,35 @@ public class DS1 implements Chromosome<DS1>, Comparable<DS1>{
 	
 	@Override
 	public int getFitness(){
+		return fitness;
+	}
+
+	private void calcFitness(){
 		if(inputData == null){
 			importRules();
 		}
-		int fitness = 0;
+		int tfitness = 0;
 		ArrayList<Data<Integer>> generatedRules = parseGenes();
 		for(Data<Integer> input : inputData){
 			for(Data<Integer> generatedRule : generatedRules){
 				if(generatedRule.matches(input)){
 					if(generatedRule.getOutput() == input.getOutput()){
-						fitness ++;
+						tfitness ++;
 					}
 					break;
 				}
 			}
 		}
-		return fitness;
+		fitness = tfitness;
 	}
-	
 	@Override
 	public int maxFitness(){
-		return 32;
+		return 80;
 	}
 
 	@Override
-	public DS1 copy() {
-		DS1 tChrom = new DS1(this.genes);
+	public SPECT copy() {
+		SPECT tChrom = new SPECT(this.genes);
 		return tChrom;
 	}
 	
@@ -155,14 +182,15 @@ public class DS1 implements Chromosome<DS1>, Comparable<DS1>{
 	}
 
 	@Override
-	public void replaceGenes(DS1 tChrom) {
-		int[] newGenes = Arrays.copyOf(tChrom.getGenes(), geneSize);
+	public void replaceGenes(SPECT tChrom) {
+		Integer[] newGenes = Arrays.copyOf(tChrom.getGenes(), geneSize);
 		this.genes = newGenes;
+		calcFitness();
 	}
 
 
 	@Override
-	public int compareTo(DS1 o) {
+	public int compareTo(SPECT o) {
 		if(o.getFitness() == this.getFitness()){
 			return 0;
 		}

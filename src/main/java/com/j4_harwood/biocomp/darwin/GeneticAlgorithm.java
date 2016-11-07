@@ -5,11 +5,11 @@ import java.util.ArrayList;
 public class GeneticAlgorithm<T extends Chromosome<T> & Comparable<T>> {
 	private int populationSize;
 	private double mutationRate = 0.015;
-	private double crossoverRate = 0.9;
-	private boolean elitism = true;
+	private double crossoverRate = 0.8;
+	private double elitismRate = 0.15;
 	
 	private ArrayList<T> population = new ArrayList<>();
-	T Elite = null;
+	private ArrayList<T> elites = new ArrayList<>();
 	
 	public GeneticAlgorithm(ArrayList<T> population){
 		this.population = population;
@@ -21,20 +21,30 @@ public class GeneticAlgorithm<T extends Chromosome<T> & Comparable<T>> {
 	}
 
 	public ArrayList<T> evolve(int generations) {
+
+		int numElites = (int) Math.round(elitismRate * (double)populationSize);
+		
 		for(int i = 0; i < generations; i++){
 			if(Evaluate(i)){
 				return population;
 			}
 			
-			if(elitism){
-				Elite = getFittest();
+			if(numElites > 0){
+				elites = new ArrayList<>();
+				for(int j = 0; j < numElites; j++){
+					elites.add(this.getFittest().copy());
+				}
 			}
+			
 			population = createOffspring();
 			
-			if(elitism){
-				this.getweakest().replaceGenes(Elite);
+			if(numElites > 0){
+				for(T elite : elites){
+					this.getweakest().replaceGenes(elite);
+				}
 			}
 		}
+		System.out.println(this.getFittest().toString());
 		return null;
 	}
 	
@@ -65,6 +75,7 @@ public class GeneticAlgorithm<T extends Chromosome<T> & Comparable<T>> {
 		System.out.println(this.getFittest().getFitness() + " : "+generation);
 		if(this.getFittest().getFitness() == this.getFittest().maxFitness()){
 			System.out.println("Took : "+generation);
+			System.out.println(this.getFittest().toString());
 			return true;
 		}
 		return false;
