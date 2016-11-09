@@ -7,14 +7,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DS1 implements Chromosome<DS1>, Comparable<DS1>{
-	private final int numRules = 15;
+	private final int numRules = 20;
 	private final int geneSize = 6*numRules;
+	private int fitness = 0;
 	
 	private static ArrayList<Data<Integer>> inputData;
 	
 	private int[] genes = new int[geneSize];
 	public DS1(){
 		this.initialise();
+		calcFitness();
 	}
 	
 	private void initialise(){
@@ -29,6 +31,7 @@ public class DS1 implements Chromosome<DS1>, Comparable<DS1>{
 	
 	public DS1(int[] newGenes){
 		this.genes = Arrays.copyOf(newGenes, newGenes.length);
+		calcFitness();
 	}
 
 	@Override
@@ -42,6 +45,7 @@ public class DS1 implements Chromosome<DS1>, Comparable<DS1>{
 				}
 			}
 		}
+		calcFitness();
 	}
 
 	@Override
@@ -120,22 +124,27 @@ public class DS1 implements Chromosome<DS1>, Comparable<DS1>{
 	
 	@Override
 	public int getFitness(){
+		
+		return fitness;
+	}
+	
+	private void calcFitness(){
 		if(inputData == null){
 			importRules();
 		}
-		int fitness = 0;
+		int tfitness = 0;
 		ArrayList<Data<Integer>> generatedRules = parseGenes();
 		for(Data<Integer> input : inputData){
 			for(Data<Integer> generatedRule : generatedRules){
 				if(generatedRule.matches(input)){
 					if(generatedRule.getOutput() == input.getOutput()){
-						fitness ++;
+						tfitness ++;
 					}
 					break;
 				}
 			}
 		}
-		return fitness;
+		fitness = tfitness;
 	}
 	
 	@Override
@@ -158,6 +167,7 @@ public class DS1 implements Chromosome<DS1>, Comparable<DS1>{
 	public void replaceGenes(DS1 tChrom) {
 		int[] newGenes = Arrays.copyOf(tChrom.getGenes(), geneSize);
 		this.genes = newGenes;
+		calcFitness();
 	}
 
 

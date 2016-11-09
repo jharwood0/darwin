@@ -13,18 +13,18 @@ public class App
         GeneticAlgorithm<DS3> GA3 = new GeneticAlgorithm<DS3>(createDS3Population());
         GeneticAlgorithm<SPECT> GA4 = new GeneticAlgorithm<SPECT>(createSPECTPopulation());
         //System.out.println("Population size = "+GA.size());
-        GA4.evolve(numGenerations);
+        GA3.evolve(numGenerations);
         
-        SPECTTestEngine TE = new SPECTTestEngine();
+        /*SPECTTestEngine TE = new SPECTTestEngine();
         TE.setTestSet("SPECT.test");
         TE.inputRules(GA4.getFittest().getGenes());
-        TE.execute();
+        TE.execute();*/
         
         //We have evolved
-       //. TestEngine TE = new TestEngine();
-        //TE.setTestSet("data3");
-        //TE.inputRules(GA3.getFittest().getGenes());
-        //TE.execute();
+        TestEngine TE = new TestEngine();
+        TE.setTestSet("data3");
+        TE.inputRules(GA3.getFittest().getGenes());
+        TE.execute();
     }
     
     /* Create the initial population */

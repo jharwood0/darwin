@@ -23,6 +23,13 @@ public class GeneticAlgorithm<T extends Chromosome<T> & Comparable<T>> {
 	public ArrayList<T> evolve(int generations) {
 
 		int numElites = (int) Math.round(elitismRate * (double)populationSize);
+		System.out.println("Elites : "+numElites);
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		for(int i = 0; i < generations; i++){
 			if(Evaluate(i)){
@@ -53,8 +60,8 @@ public class GeneticAlgorithm<T extends Chromosome<T> & Comparable<T>> {
 		// Should be static, but future problems
 		T tChrom = population.get(0);
 		for(int i = 0; i < populationSize/2; i++){
-			T p1 = tournamentSelection(4);
-			T p2 = tournamentSelection(4);
+			T p1 = rouletteSelection();
+			T p2 = rouletteSelection();
 			if(GARand.nextDouble() < crossoverRate){
 				T[] children = tChrom.crossover(p1, p2);
 				children[0].mutate(mutationRate);
@@ -72,13 +79,18 @@ public class GeneticAlgorithm<T extends Chromosome<T> & Comparable<T>> {
 	}
 
 	private boolean Evaluate(int generation){
-		System.out.println(this.getFittest().getFitness() + " : "+generation);
+		System.out.println(generation + ", " + this.totalFitness() + ", "+ this.getFittest().getFitness() + ", "+this.averageFitness());
+		//System.out.println(this.getFittest().getFitness() + " : "+generation);
 		if(this.getFittest().getFitness() == this.getFittest().maxFitness()){
 			System.out.println("Took : "+generation);
 			System.out.println(this.getFittest().toString());
 			return true;
 		}
 		return false;
+	}
+
+	public int averageFitness(){
+		return (int) ((double)this.totalFitness() / (double)population.size());
 	}
 	
 	public T getFittest(){

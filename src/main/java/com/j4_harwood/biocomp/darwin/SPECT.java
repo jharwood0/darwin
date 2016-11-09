@@ -7,7 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SPECT implements Chromosome<SPECT>, Comparable<SPECT>{
-	private final int numRules = 8;
+	private final int numRules = 9;
 	private final int geneSize = (22+1)*numRules;
 	private int fitness = 0;
 	private static ArrayList<Data<Integer>> inputData;

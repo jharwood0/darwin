@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 public class DS3 implements Chromosome<DS3>, Comparable<DS3>{
 	/* to encapsulate a rule */
 	
-	private final int numRules = 12;
+	private final int numRules = 5;
 	private final int geneSize = ((6*2)+1)*numRules;
 	
 	private static ArrayList<Data<Float>> inputData;
@@ -30,12 +30,23 @@ public class DS3 implements Chromosome<DS3>, Comparable<DS3>{
 	}
 	
 	private float newGene(){
+		//return either 0 or 0.5 or 1.0
+		int r = GARand.nextInt(3);
+		if(r == 0){
+			return (float) 0.0;
+		}else if(r == 1){
+			return (float) 0.5;
+		}else if(r == 2){
+			return (float) 1.0;
+		}
+		return -1;
+		/*
 		Double toBeTruncated = GARand.nextDouble();
 
 		Double truncatedDouble = BigDecimal.valueOf(toBeTruncated)
 		    .setScale(6, RoundingMode.HALF_UP)
 		    .doubleValue();
-		return truncatedDouble.floatValue();
+		return truncatedDouble.floatValue();*/
 	}
 	
 	public DS3(Float[] newGenes){
@@ -158,7 +169,7 @@ public class DS3 implements Chromosome<DS3>, Comparable<DS3>{
 	
 	@Override
 	public int maxFitness(){
-		return 1200;
+		return 2000;
 	}
 
 	@Override
