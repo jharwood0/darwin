@@ -4,27 +4,29 @@ import java.util.ArrayList;
 
 public class App 
 {
-	private static int populationSize = 100;
-	private static int numGenerations = 10000;
+	private static int populationSize = 90;
+	private static int numGenerations = 5000;
     public static void main( String[] args )
     {
+    	/* Creates 4 different environments for the different data sets */
         GeneticAlgorithm<DS1> GA1 = new GeneticAlgorithm<DS1>(createDS1Population());
         GeneticAlgorithm<DS2> GA2 = new GeneticAlgorithm<DS2>(createDS2Population());
         GeneticAlgorithm<DS3> GA3 = new GeneticAlgorithm<DS3>(createDS3Population());
         GeneticAlgorithm<SPECT> GA4 = new GeneticAlgorithm<SPECT>(createSPECTPopulation());
-        //System.out.println("Population size = "+GA.size());
+        
         GA3.evolve(numGenerations);
         
-        /*SPECTTestEngine TE = new SPECTTestEngine();
-        TE.setTestSet("SPECT.test");
-        TE.inputRules(GA4.getFittest().getGenes());
-        TE.execute();*/
+        /* This can be uncommented to test the fittnest SPECT gene against the test set */
+        //SPECTTestEngine TE = new SPECTTestEngine();
+        //TE.setTestSet("SPECT.test");
+        //TE.inputRules(GA4.getFittest().getGenes());
+        //TE.execute();
         
-        //We have evolved
-        TestEngine TE = new TestEngine();
-        TE.setTestSet("data3");
-        TE.inputRules(GA3.getFittest().getGenes());
-        TE.execute();
+        /* This can be uncommented to test the fittnest DS3 gene against the test set */
+        //TestEngine TE = new TestEngine();
+        //TE.setTestSet("data3");
+        //TE.inputRules(GA3.getFittest().getGenes());
+        //TE.execute();
     }
     
     /* Create the initial population */
@@ -34,6 +36,7 @@ public class App
     		tPop.add(new DS1());
     	}
     	return tPop;
+    	
     }
     
     /* Create the initial population */

@@ -18,7 +18,7 @@ public class BoundedData{
 			i++;
 			int thigh = i;
 			//System.out.println("high: "+input[thigh]+ ": low : "+input[tlow]+" actual : "+ testInput[j]);
-			if(!(testInput[j] <= input[thigh] && testInput[j] >= input[tlow])){
+			if((!(testInput[j] <= input[thigh] && testInput[j] >= input[tlow])) && !(testInput[j] >= input[thigh] && testInput[j] <= input[tlow])){
 				return false;
 			}
 			i++;

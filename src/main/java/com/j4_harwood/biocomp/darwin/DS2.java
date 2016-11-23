@@ -32,6 +32,9 @@ public class DS2 implements Chromosome<DS2>, Comparable<DS2>{
 	}
 
 	@Override
+	/*
+	 * Loop through genome and replace gene with new one if mutation rate allows
+	 */
 	public void mutate(double mutationRate) {
 		for(int i = 0; i < geneSize; i++){
 			double rnd = GARand.nextDouble();
@@ -45,6 +48,12 @@ public class DS2 implements Chromosome<DS2>, Comparable<DS2>{
 	}
 
 	@Override
+	/*
+	 * creates random point for crossover
+	 * loops through genome, if i is less that crossover point, copy parent gene into
+	 * child gene, if i is greater than, then swap the parents round.
+	 * return the two children
+	 */
 	public DS2[] crossover(DS2 parent1, DS2 parent2) {
 		//Creates 2 NEW children
 		int[] p1 = parent1.getGenes();

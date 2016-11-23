@@ -7,7 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DS1 implements Chromosome<DS1>, Comparable<DS1>{
-	private final int numRules = 20;
+	private final int numRules = 15;
 	private final int geneSize = 6*numRules;
 	private int fitness = 0;
 	
@@ -35,6 +35,9 @@ public class DS1 implements Chromosome<DS1>, Comparable<DS1>{
 	}
 
 	@Override
+	/*
+	 * Loop through genome and replace gene with new one if mutation rate allows
+	 */
 	public void mutate(double mutationRate) {
 		for(int i = 0; i < geneSize; i++){
 			double rnd = GARand.nextDouble();
@@ -49,6 +52,12 @@ public class DS1 implements Chromosome<DS1>, Comparable<DS1>{
 	}
 
 	@Override
+	/*
+	 * creates random point for crossover
+	 * loops through genome, if i is less that crossover point, copy parent gene into
+	 * child gene, if i is greater than, then swap the parents round.
+	 * return the two children
+	 */
 	public DS1[] crossover(DS1 parent1, DS1 parent2) {
 		//Creates 2 NEW children
 		int[] p1 = parent1.getGenes();

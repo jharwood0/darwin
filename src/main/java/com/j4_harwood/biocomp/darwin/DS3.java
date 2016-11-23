@@ -31,7 +31,7 @@ public class DS3 implements Chromosome<DS3>, Comparable<DS3>{
 	
 	private float newGene(){
 		//return either 0 or 0.5 or 1.0
-		int r = GARand.nextInt(3);
+		/*int r = GARand.nextInt(3);
 		if(r == 0){
 			return (float) 0.0;
 		}else if(r == 1){
@@ -39,21 +39,23 @@ public class DS3 implements Chromosome<DS3>, Comparable<DS3>{
 		}else if(r == 2){
 			return (float) 1.0;
 		}
-		return -1;
-		/*
+		return -1; */
 		Double toBeTruncated = GARand.nextDouble();
 
 		Double truncatedDouble = BigDecimal.valueOf(toBeTruncated)
 		    .setScale(6, RoundingMode.HALF_UP)
 		    .doubleValue();
-		return truncatedDouble.floatValue();*/
+		return truncatedDouble.floatValue();
 	}
 	
 	public DS3(Float[] newGenes){
 		genes = Arrays.copyOf(newGenes, newGenes.length);
 		calculateFitness();
 	}
-
+	
+	/*
+	 * Loop through genome and replace gene with new one if mutation rate allows
+	 */
 	public void mutate(double mutationRate) {
 		for(int i = 0; i < geneSize; i++){
 			double rnd = GARand.nextDouble();
@@ -69,6 +71,12 @@ public class DS3 implements Chromosome<DS3>, Comparable<DS3>{
 	
 
 	@Override
+	/*
+	 * creates random point for crossover
+	 * loops through genome, if i is less that crossover point, copy parent gene into
+	 * child gene, if i is greater than, then swap the parents round.
+	 * return the two children
+	 */
 	public DS3[] crossover(DS3 parent1, DS3 parent2) {
 		//Creates 2 NEW children
 		Float[] p1 = parent1.getGenes();
@@ -169,7 +177,7 @@ public class DS3 implements Chromosome<DS3>, Comparable<DS3>{
 	
 	@Override
 	public int maxFitness(){
-		return 2000;
+		return 1200;
 	}
 
 	@Override
