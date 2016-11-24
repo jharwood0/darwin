@@ -88,7 +88,7 @@ public class DS2 implements Chromosome<DS2>, Comparable<DS2>{
 	
 	private void importRules(){
 		inputData = new ArrayList<Data<Integer>>();
-		Scanner scanner = new Scanner(getClass().getResourceAsStream("data2"));
+		Scanner scanner = new Scanner(getClass().getResourceAsStream("DS2.train"));
 		String p = "(\\d)(\\d)(\\d)(\\d)(\\d)(\\d)\\s(\\d)";
 		Pattern pattern = Pattern.compile(p);
 		while(scanner.hasNextLine()){

@@ -92,7 +92,7 @@ public class DS1 implements Chromosome<DS1>, Comparable<DS1>{
 	
 	private void importRules(){
 		inputData = new ArrayList<Data<Integer>>();
-		Scanner scanner = new Scanner(getClass().getResourceAsStream("data1"));
+		Scanner scanner = new Scanner(getClass().getResourceAsStream("DS1.train"));
 		String p = "(\\d)(\\d)(\\d)(\\d)(\\d)\\s(\\d)";
 		Pattern pattern = Pattern.compile(p);
 		while(scanner.hasNextLine()){

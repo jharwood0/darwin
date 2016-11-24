@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class GeneticAlgorithm<T extends Chromosome<T> & Comparable<T>> {
 	
-	/* configuration paramseters for the GA environment */
+	/* configuration params for the GA environment */
 	private int populationSize;
 	private double mutationRate = 0.008;
 	private double crossoverRate = 0.7;

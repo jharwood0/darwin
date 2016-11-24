@@ -111,7 +111,7 @@ public class DS3 implements Chromosome<DS3>, Comparable<DS3>{
 	
 	private void importRules(){
 		inputData = new ArrayList<Data<Float>>();
-		Scanner scanner = new Scanner(getClass().getResourceAsStream("DS3.txt"));
+		Scanner scanner = new Scanner(getClass().getResourceAsStream("DS3.train"));
 		String p = "([-+]?[0-9]*\\.?[0-9]*)\\s([-+]?[0-9]*\\.?[0-9]*)\\s([-+]?[0-9]*\\.?[0-9]*)\\s([-+]?[0-9]*\\.?[0-9]*)\\s([-+]?[0-9]*\\.?[0-9]*)\\s([-+]?[0-9]*\\.?[0-9]*)\\s(\\d)";
 		Pattern pattern = Pattern.compile(p);
 		while(scanner.hasNextLine()){

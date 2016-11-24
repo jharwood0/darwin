@@ -24,7 +24,7 @@ public class App
         
         /* This can be uncommented to test the fittnest DS3 gene against the test set */
         //TestEngine TE = new TestEngine();
-        //TE.setTestSet("data3");
+        //TE.setTestSet("DS3.test");
         //TE.inputRules(GA3.getFittest().getGenes());
         //TE.execute();
     }
